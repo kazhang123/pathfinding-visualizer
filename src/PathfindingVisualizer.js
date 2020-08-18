@@ -11,16 +11,20 @@ class PathfindingVisualizer extends Component {
   componentDidMount() {
     const nodes = [];
 
-    for (let x = 0; x < 35; x++) {
-      const col = [];
-      for (let y = 0; y < 15; y++) {
+    for (let col = 0; col < 35; col++) {
+      const currCol = [];
+      for (let row = 0; row < 15; row++) {
         const currNode = {
-          x,
-          y,
+          col,
+          row,
+          isStart: col === 5 && row === 7,
+          isEnd: col === 29 && row === 7,
+          isVisited: false,
+          isWall: false,
         };
-        col.push(currNode);
+        currCol.push(currNode);
       }
-      nodes.push(col);
+      nodes.push(currCol);
     }
 
     this.setState({ nodes });
@@ -30,11 +34,11 @@ class PathfindingVisualizer extends Component {
     return (
       <React.Fragment>
         <div className="grid">
-          {this.state.nodes.map((col) => {
+          {this.state.nodes.map((col, colIdx) => {
             return (
-              <div>
-                {col.map((node) => (
-                  <Node></Node>
+              <div key={colIdx}>
+                {col.map((node, rowIdx) => (
+                  <Node key={rowIdx} node={node} />
                 ))}
               </div>
             );

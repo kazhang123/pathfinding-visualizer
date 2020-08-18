@@ -3,3 +3,11 @@
   background-color: white;
   padding: 15px;
 }
+
+.start {
+  background-color: green;
+}
+
+.end {
+  background-color: red;
+}
