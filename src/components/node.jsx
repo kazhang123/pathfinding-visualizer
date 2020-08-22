@@ -4,8 +4,16 @@ import "./node.css";
 class Node extends Component {
   getClasses() {
     let classes = "node ";
-    const { isStart, isEnd } = this.props.node;
-    classes += isStart ? "start" : isEnd ? "end" : "";
+    const { isStart, isEnd, isVisited, isWall } = this.props.node;
+    classes += isStart
+      ? "start"
+      : isEnd
+      ? "end"
+      : isVisited
+      ? "visited"
+      : isWall
+      ? "wall"
+      : "";
     return classes;
   }
 

@@ -11,3 +11,11 @@
 .end {
   background-color: red;
 }
+
+.visited {
+  background-color: aquamarine;
+}
+
+.wall {
+  background-color: black;
+}
