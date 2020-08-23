@@ -1,7 +1,56 @@
 .node {
-  border: 1px solid black;
+  border: 1px solid rgb(126, 179, 176);
   background-color: white;
-  padding: 15px;
+  /* padding: 15px; */
+  width: 30px;
+  height: 30px;
+}
+
+.visited {
+  /* background-color: aquamarine; */
+  animation-name: visited;
+  animation-duration: 1.8s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes visited {
+  0% {
+    background-color: white;
+    border-radius: 100%;
+    border-color: transparent;
+  }
+  25% {
+    background-color: yellow;
+  }
+  50% {
+    background-color: rgb(61, 214, 224);
+  }
+  100% {
+    background-color: aquamarine;
+  }
+}
+
+.wall {
+  background-color: black;
+}
+
+.path {
+  /* background-color: yellow; */
+  animation-name: path;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
+}
+
+@keyframes path {
+  from {
+    background-color: aquamarine;
+  }
+  to {
+    background-color: yellow;
+    border-color: transparent;
+  }
 }
 
 .start {
@@ -10,12 +59,4 @@
 
 .end {
   background-color: red;
-}
-
-.visited {
-  background-color: aquamarine;
-}
-
-.wall {
-  background-color: black;
 }

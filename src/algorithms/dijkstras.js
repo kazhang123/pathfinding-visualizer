@@ -99,43 +99,15 @@ export function dijkstras(graph, startNode, endNode) {
 /*
 returns shortest path from startNode to endNode
 */
-function getShortestPath(parent, endNode) {
+export function getShortestPath(endNode) {
   const path = [];
   let currNode = endNode;
-  while (parent[currNode] !== null) {
+  while (currNode !== null) {
     path.push(currNode);
-    currNode = parent[currNode];
+    currNode = currNode.predecessor;
   }
 
   return path.reverse();
-}
-
-/*
-returns node with shortest distance from the start node
-that is unvisited and not a wall
-*/
-function shortestDistanceNode(graph) {
-  let shortest;
-
-  // for (let node in distances) {
-  //   if (shortest === null || distances[node] < distances[shortest]) {
-  //     if (!node.isVisited && !node.isWall) {
-  //       shortest = node;
-  //     }
-  //   }
-  // }
-
-  for (const col of graph) {
-    for (const node of col) {
-      if (shortest === null || node.distance < shortest.distance) {
-        if (!node.isVisited && !node.isWall) {
-          shortest = node;
-        }
-      }
-    }
-  }
-
-  return shortest;
 }
 
 /*
