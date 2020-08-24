@@ -23,13 +23,15 @@ class Node extends Component {
   render() {
     const { col, row } = this.props.node;
     return (
-      <div
-        onMouseDown={() => this.props.onMouseDown(col, row)}
-        onMouseEnter={() => this.props.onMouseEnter(col, row)}
-        onMouseUp={() => this.props.onMouseUp()}
-        className={this.getClasses()}
-        id={`node ${col} ${row}`}
-      ></div>
+      <div className="wrap">
+        <div
+          onMouseDown={() => this.props.onMouseDown(col, row)}
+          onMouseEnter={() => this.props.onMouseEnter(col, row)}
+          onMouseUp={() => this.props.onMouseUp()}
+          className={this.getClasses()}
+          id={`node ${col} ${row}`}
+        ></div>
+      </div>
     );
   }
 }
