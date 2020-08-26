@@ -14,7 +14,12 @@ const NUM_ROWS = 19;
 class PathfindingVisualizer extends Component {
   state = {
     nodes: [],
+    start: { x: START_NODE_X, y: START_NODE_Y },
+    end: { x: END_NODE_X, y: END_NODE_Y },
     mouseIsPressed: false,
+    startIsPressed: false,
+    endIsPressed: false,
+    selectedAlgorithm: "",
   };
 
   componentDidMount() {
@@ -44,8 +49,9 @@ class PathfindingVisualizer extends Component {
 
   visualizeDijkstras = () => {
     const graph = [...this.state.nodes];
-    const startNode = graph[START_NODE_X][START_NODE_Y];
-    const endNode = graph[END_NODE_X][END_NODE_Y];
+    const { start, end } = this.state;
+    const startNode = graph[start.x][start.y];
+    const endNode = graph[end.x][end.y];
     const visitedNodes = dijkstras(graph, startNode, endNode);
     console.log(visitedNodes);
 
@@ -95,40 +101,58 @@ class PathfindingVisualizer extends Component {
     const graph = [...this.state.nodes];
     const currNode = graph[x][y];
     if (!currNode.isStart && !currNode.isEnd) {
-      const newNode = {
-        ...currNode,
-        isWall: !currNode.isWall,
-      };
-
-      graph[x][y] = newNode;
-      this.setState({ nodes: graph, mouseIsPressed: true });
-    }
-  };
-
-  handleMouseEnter = (x, y) => {
-    if (this.state.mouseIsPressed) {
-      const graph = [...this.state.nodes];
-      const currNode = graph[x][y];
-      if (!currNode.isStart && !currNode.isEnd) {
-        const newNode = {
-          ...currNode,
-          isWall: !currNode.isWall,
-        };
-
-        graph[x][y] = newNode;
-        this.setState({ nodes: graph });
+      this.toggleWall(currNode, graph);
+      this.setState({ mouseIsPressed: true });
+    } else {
+      if (currNode.isStart) {
+        this.setState({ mouseIsPressed: true, startIsPressed: true });
+      } else {
+        this.setState({ mouseIsPressed: true, endIsPressed: true });
       }
     }
   };
 
-  handleMouseUp = () => {
-    this.setState({ mouseIsPressed: false });
+  handleMouseEnter = (x, y) => {
+    if (!this.state.mouseIsPressed) {
+      return;
+    }
+
+    const graph = [...this.state.nodes];
+    const currNode = graph[x][y];
+
+    if (this.state.startIsPressed) {
+      this.changeStartNode(currNode, graph);
+      return;
+    } else if (this.state.endIsPressed) {
+      this.changeEndNode(currNode, graph);
+      return;
+    }
+
+    if (!currNode.isStart && !currNode.isEnd) {
+      this.toggleWall(currNode, graph);
+    }
   };
+
+  handleMouseUp = () => {
+    this.setState({
+      mouseIsPressed: false,
+      startIsPressed: false,
+      endIsPressed: false,
+    });
+  };
+
+  // setSelectedAlgorithm = (algorithm) => {
+  // 	this.setState(selectAlgorithm: algorithm);
+  // }
 
   render() {
     return (
       <React.Fragment>
-        <button onClick={this.visualizeDijkstras}>Visualize Dijkstra's</button>
+        <NavBar
+          onVisualizeDijkstras={this.visualizeDijkstras}
+          // selectAlgorithm={this.setSelectedAlgorithm}
+        />
+        {/* <button onClick={this.visualizeDijkstras}>Visualize Dijkstra's</button> */}
         <div className="grid">
           {this.state.nodes.map((col, colIdx) => {
             return (
@@ -148,6 +172,47 @@ class PathfindingVisualizer extends Component {
         </div>
       </React.Fragment>
     );
+  }
+
+  /**
+   * 	toggles the given node at x,y on the graph as/not as a wall
+   * @param {*} currNode
+   * @param {*} graph
+   */
+  toggleWall(currNode, graph) {
+    const newNode = {
+      ...currNode,
+      isWall: !currNode.isWall,
+    };
+
+    graph[currNode.col][currNode.row] = newNode;
+    this.setState({ nodes: graph });
+  }
+
+  /**
+   * sets given node as the end node
+   * @param {*} currNode
+   * @param {*} graph
+   */
+  changeEndNode(currNode, graph) {
+    const { col, row } = currNode;
+    const { x, y } = this.state.end;
+    graph[x][y].isEnd = false;
+    currNode.isEnd = true;
+    this.setState({ nodes: graph, end: { x: col, y: row } });
+  }
+
+  /**
+   * sets given node as the start node
+   * @param {*} currNode
+   * @param {*} graph
+   */
+  changeStartNode(currNode, graph) {
+    const { col, row } = currNode;
+    const { x, y } = this.state.start;
+    graph[x][y].isStart = false;
+    currNode.isStart = true;
+    this.setState({ nodes: graph, start: { x: col, y: row } });
   }
 }
 
