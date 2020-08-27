@@ -1,5 +1,9 @@
 import React, { Component } from "react";
 
+const DIJKSTRAS_LABEL = "Dijkstra's";
+const BFS_LABEL = "Breadth First Search";
+const DFS_LABEL = "Depth First Search";
+
 class NavBar extends Component {
   render() {
     return (
@@ -51,7 +55,11 @@ class NavBar extends Component {
                 class="dropdown-menu"
                 aria-labelledby="navbarDropdownMenuLink"
               >
-                <button class="dropdown-item" href="#">
+                <button
+                  onClick={() => this.props.setAlgorithm("Dijkstra's")}
+                  class="dropdown-item"
+                  href="#"
+                >
                   Dijkstra's
                 </button>
                 <button class="dropdown-item" href="#">
@@ -64,11 +72,38 @@ class NavBar extends Component {
             </li>
             <li class="nav-item">
               <button
-                onClick={this.props.onVisualizeDijkstras}
+                onClick={this.props.onVisualize}
                 class="btn btn-info btn-m"
                 // href="#"
               >
-                Visualize
+                {`Visualize ${this.props.selectedAlgorithm}`}
+              </button>
+            </li>
+            <li class="nav-item">
+              <button
+                onClick={this.props.onClearPath}
+                class="btn btn-dark"
+                href="#"
+              >
+                Clear Path
+              </button>
+            </li>
+            <li class="nav-item">
+              <button
+                onClick={this.props.onClearWalls}
+                class="btn btn-dark"
+                href="#"
+              >
+                Clear Walls
+              </button>
+            </li>
+            <li class="nav-item">
+              <button
+                onClick={this.props.onReset}
+                class="btn btn-dark"
+                href="#"
+              >
+                Reset
               </button>
             </li>
           </ul>

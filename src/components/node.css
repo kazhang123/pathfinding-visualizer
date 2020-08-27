@@ -46,8 +46,22 @@
 
 .wall {
   background-color: black;
-  /* outline: 1px solid black; */
+  outline: 1px solid black;
+  /* animation-name: wallAnimation;
+  animation-duration: 0.2s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out; */
 }
+
+/* @keyframes wallAnimation {
+  0% {
+    transform: scale(0.2);
+    border-radius: 100%;
+  }
+  75% {
+    transform: scale(1.2);
+  }
+} */
 
 .path {
   /* background-color: yellow; */

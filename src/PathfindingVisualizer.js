@@ -23,31 +23,12 @@ class PathfindingVisualizer extends Component {
   };
 
   componentDidMount() {
-    const nodes = [];
-
-    for (let col = 0; col < NUM_COLS; col++) {
-      const currCol = [];
-      for (let row = 0; row < NUM_ROWS; row++) {
-        const currNode = {
-          col,
-          row,
-          isStart: col === START_NODE_X && row === START_NODE_Y,
-          isEnd: col === END_NODE_X && row === END_NODE_Y,
-          isVisited: false,
-          isWall: false,
-          isPath: false,
-          distance: Infinity,
-          predecessor: null,
-        };
-        currCol.push(currNode);
-      }
-      nodes.push(currCol);
-    }
-
+    const nodes = this.getInitialGraph();
     this.setState({ nodes });
   }
 
   visualizeDijkstras = () => {
+    this.resetNodesToUnvisited();
     const graph = [...this.state.nodes];
     const { start, end } = this.state;
     const startNode = graph[start.x][start.y];
@@ -66,15 +47,8 @@ class PathfindingVisualizer extends Component {
       }
 
       let currNode = visitedNodes[i];
-      // let newNode = {
-      //   ...currNode,
-      //   isVisited: true,
-      // };
-      // let { col, row } = newNode;
       const { col, row } = currNode;
       setTimeout(() => {
-        // graph[col][row] = newNode;
-        // this.setState({ nodes: graph });
         document.getElementById(`node ${col} ${row}`).className += " visited";
       }, 15 * i);
     }
@@ -83,15 +57,8 @@ class PathfindingVisualizer extends Component {
   animatePath(shortestPath, graph) {
     for (let i = 0; i < shortestPath.length; i++) {
       let currNode = shortestPath[i];
-      // let newNode = {
-      //   ...currNode,
-      //   isPath: true,
-      // };
-      // let { col, row } = newNode;
       const { col, row } = currNode;
       setTimeout(() => {
-        // graph[col][row] = newNode;
-        // this.setState({ nodes: graph });
         document.getElementById(`node ${col} ${row}`).className += " path";
       }, 30 * i);
     }
@@ -141,19 +108,52 @@ class PathfindingVisualizer extends Component {
     });
   };
 
-  // setSelectedAlgorithm = (algorithm) => {
-  // 	this.setState(selectAlgorithm: algorithm);
-  // }
+  setSelectedAlgorithm = (algorithm) => {
+    this.setState({ selectedAlgorithm: algorithm });
+  };
+
+  handleVisualize = () => {
+    const { selectedAlgorithm } = this.state;
+    switch (selectedAlgorithm) {
+      case "Dijkstra's":
+        this.visualizeDijkstras();
+        break;
+    }
+  };
+
+  handleReset = () => {
+    const nodes = this.getInitialGraph();
+    this.setState({
+      nodes,
+      start: { x: START_NODE_X, y: START_NODE_Y },
+      end: { x: END_NODE_X, y: END_NODE_Y },
+    });
+  };
+
+  clearWalls = () => {
+    const graph = [...this.state.nodes];
+    for (let x = 0; x < NUM_COLS; x++) {
+      for (let y = 0; y < NUM_ROWS; y++) {
+        let node = graph[x][y];
+        node.isWall = false;
+      }
+    }
+
+    this.setState({ nodes: graph });
+  };
 
   render() {
     return (
       <React.Fragment>
         <NavBar
-          onVisualizeDijkstras={this.visualizeDijkstras}
-          // selectAlgorithm={this.setSelectedAlgorithm}
+          setAlgorithm={this.setSelectedAlgorithm}
+          selectedAlgorithm={this.state.selectedAlgorithm}
+          onVisualize={this.handleVisualize}
+          onReset={this.handleReset}
+          onClearPath={this.resetNodesToUnvisited}
+          onClearWalls={this.clearWalls}
         />
-        {/* <button onClick={this.visualizeDijkstras}>Visualize Dijkstra's</button> */}
-        <div className="grid">
+        <div key={new Date()} className="grid">
           {this.state.nodes.map((col, colIdx) => {
             return (
               <div key={colIdx}>
@@ -213,6 +213,51 @@ class PathfindingVisualizer extends Component {
     graph[x][y].isStart = false;
     currNode.isStart = true;
     this.setState({ nodes: graph, start: { x: col, y: row } });
+  }
+
+  /**
+   * resets state's nodes to before dijkstra's was called
+   */
+  resetNodesToUnvisited = () => {
+    const graph = [...this.state.nodes];
+    for (let x = 0; x < NUM_COLS; x++) {
+      for (let y = 0; y < NUM_ROWS; y++) {
+        let node = graph[x][y];
+        node.isVisited = false;
+        node.isPath = false;
+        node.distance = Infinity;
+        node.predecessor = null;
+      }
+    }
+
+    this.setState({ nodes: graph });
+  };
+
+  /**
+   * returns initial graph with no walls toggled or visited nodes
+   */
+  getInitialGraph() {
+    const nodes = [];
+
+    for (let col = 0; col < NUM_COLS; col++) {
+      const currCol = [];
+      for (let row = 0; row < NUM_ROWS; row++) {
+        const currNode = {
+          col,
+          row,
+          isStart: col === START_NODE_X && row === START_NODE_Y,
+          isEnd: col === END_NODE_X && row === END_NODE_Y,
+          isVisited: false,
+          isWall: false,
+          isPath: false,
+          distance: Infinity,
+          predecessor: null,
+        };
+        currCol.push(currNode);
+      }
+      nodes.push(currCol);
+    }
+    return nodes;
   }
 }
 
