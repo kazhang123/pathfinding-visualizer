@@ -113,7 +113,7 @@ export function getShortestPath(endNode) {
 /*
 returns unvisited, non-wall neighbours (N, E, S, W) of given node 
 */
-function getUnvisitedNeighbours(graph, node) {
+export function getUnvisitedNeighbours(graph, node) {
   const neighbours = [];
   const { col, row } = node;
   if (row > 0) neighbours.push(graph[col][row - 1]);
