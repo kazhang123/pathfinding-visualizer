@@ -62,7 +62,11 @@ class NavBar extends Component {
                 >
                   Dijkstra's
                 </button>
-                <button class="dropdown-item" href="#">
+                <button
+                  onClick={() => this.props.setAlgorithm("BFS")}
+                  class="dropdown-item"
+                  href="#"
+                >
                   Breadth First Search
                 </button>
                 <button class="dropdown-item" href="#">

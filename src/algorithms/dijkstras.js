@@ -12,16 +12,6 @@ export function dijkstras(graph, startNode, endNode) {
     return node.distance;
   });
 
-  // // set all distances to be inifinite except for start node
-  // for (const col of graph) {
-  //   for (const node of col) {
-  //     // if (node !== startNode) {
-  //     distances[node] = Infinity;
-  //     parent[node] = null;
-  //     // }
-  //   }
-  // }
-
   // initialize source
   // distances[startNode] = 0;
   startNode.distance = 0;
@@ -34,7 +24,7 @@ export function dijkstras(graph, startNode, endNode) {
 
     const { distance } = currNode;
 
-    // currNode.isVisited = true;
+    currNode.isVisited = true;
     visited.push(currNode);
     // if current node is end node, we are done searching
     if (currNode === endNode) {
@@ -51,49 +41,9 @@ export function dijkstras(graph, startNode, endNode) {
         pq.push(neighbour);
       }
     }
-
-    // if (currNode.col === 4 && currNode.row === 11) {
-    //   const min = pq.peek();
-    //   console.log(min);
-    //   console.log(pq);
-    // }
   }
 
   return visited;
-  // let currNode = startNode;
-
-  // // for that node:
-  // while (currNode) {
-  //   // distance from start node
-  //   // let distance = distances[currNode];
-  //   const { distance } = currNode;
-
-  //   // if distance of closest node is infinity, we are trapped
-  //   if (distance === Infinity) {
-  //     return visited;
-  //   }
-
-  //   // move current node to visited set
-  //   currNode.isVisited = true;
-  //   visited.push(currNode);
-  //   // if current node is end node, we are done searching
-  //   if (currNode === endNode) {
-  //     return visited;
-  //   }
-
-  //   // for each unvisited neighbour:
-  //   let neighbours = getUnvisitedNeighbours(graph, currNode);
-  //   for (let neighbour of neighbours) {
-  //     // update distance from start node and predecessor
-  //     if (distance + 1 < neighbour.distance) {
-  //       neighbour.distance = distance + 1;
-  //       neighbour.predecessor = currNode;
-  //     }
-  //   }
-
-  //   // move to nearest unvisited, non-wall neighbour node
-  //   currNode = shortestDistanceNode(graph);
-  // }
 }
 
 /*
