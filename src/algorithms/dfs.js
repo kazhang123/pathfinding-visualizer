@@ -1,16 +1,16 @@
-import Queue from "./Queue";
+import Stack from "./Stack";
 import { getUnvisitedNeighbours } from "./dijkstras";
 
-export function bfs(graph, startNode, endNode) {
-  const q = new Queue();
+export function dfs(graph, startNode, endNode) {
+  const stack = new Stack();
   const visited = [];
 
-  q.enqueue(startNode);
+  stack.push(startNode);
   visited.push(startNode);
   startNode.isVisited = true;
 
-  while (!q.isEmpty()) {
-    let currNode = q.dequeue();
+  while (!stack.isEmpty()) {
+    let currNode = stack.pop();
 
     let neighbours = getUnvisitedNeighbours(graph, currNode);
     for (let neighbour of neighbours) {
@@ -22,7 +22,7 @@ export function bfs(graph, startNode, endNode) {
         return visited;
       }
 
-      q.enqueue(neighbour);
+      stack.push(neighbour);
     }
   }
 

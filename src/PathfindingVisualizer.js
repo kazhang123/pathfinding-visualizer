@@ -4,6 +4,8 @@ import Node from "./components/node.jsx";
 import "./PathfindingVisualizer.css";
 import { dijkstras, getShortestPath } from "./algorithms/dijkstras";
 import { bfs } from "./algorithms/bfs";
+import { dfs } from "./algorithms/dfs";
+import { aStar } from "./algorithms/aStar";
 
 const START_NODE_X = 12;
 const START_NODE_Y = 9;
@@ -28,46 +30,13 @@ class PathfindingVisualizer extends Component {
     this.setState({ nodes });
   }
 
-  // visualizeDijkstras = () => {
-  //   this.resetNodesToUnvisited();
-  //   const graph = [...this.state.nodes];
-  //   const { start, end } = this.state;
-  //   const startNode = graph[start.x][start.y];
-  //   const endNode = graph[end.x][end.y];
-  //   const visitedNodes = dijkstras(graph, startNode, endNode);
-  //   console.log(visitedNodes);
-
-  //   for (let i = 0; i <= visitedNodes.length; i++) {
-  //     if (i === visitedNodes.length) {
-  //       setTimeout(() => {
-  //         const shortestPath = getShortestPath(endNode);
-  //         this.animatePath(shortestPath);
-  //       }, 15 * i);
-
-  //       return;
-  //     }
-
-  //     let currNode = visitedNodes[i];
-  //     const { col, row } = currNode;
-  //     setTimeout(() => {
-  //       document.getElementById(`node ${col} ${row}`).className += " visited";
-  //     }, 15 * i);
-  //   }
-  // };
-
   visualize = (visitedNodes, shortestPath) => {
     this.resetNodesToUnvisited();
-    // const graph = [...this.state.nodes];
-    // const { start, end } = this.state;
-    // const startNode = graph[start.x][start.y];
-    // const endNode = graph[end.x][end.y];
-    // const visitedNodes = dijkstras(graph, startNode, endNode);
     console.log(visitedNodes);
 
     for (let i = 0; i <= visitedNodes.length; i++) {
       if (i === visitedNodes.length) {
         setTimeout(() => {
-          // const shortestPath = getShortestPath(endNode);
           this.animatePath(shortestPath);
         }, 15 * i);
 
@@ -148,23 +117,24 @@ class PathfindingVisualizer extends Component {
     const endNode = graph[end.x][end.y];
 
     let visitedNodes = null;
-    let shortestPath = null;
 
     switch (selectedAlgorithm) {
       case "Dijkstra's":
-        // this.visualizeDijkstras();
         visitedNodes = dijkstras(graph, startNode, endNode);
-        shortestPath = getShortestPath(endNode);
-        this.visualize(visitedNodes, shortestPath);
         break;
       case "BFS":
         visitedNodes = bfs(graph, startNode, endNode);
-        console.log(visitedNodes);
-        shortestPath = getShortestPath(endNode);
-        console.log(shortestPath);
-        this.visualize(visitedNodes, shortestPath);
+        break;
+      case "DFS":
+        visitedNodes = dfs(graph, startNode, endNode);
+        break;
+      case "A*":
+        visitedNodes = aStar(graph, startNode, endNode);
         break;
     }
+
+    const shortestPath = getShortestPath(endNode);
+    this.visualize(visitedNodes, shortestPath);
   };
 
   handleReset = () => {
@@ -245,6 +215,7 @@ class PathfindingVisualizer extends Component {
     const { x, y } = this.state.end;
     graph[x][y].isEnd = false;
     currNode.isEnd = true;
+    currNode.isWall = false;
     this.setState({ nodes: graph, end: { x: col, y: row } });
   }
 
@@ -258,6 +229,7 @@ class PathfindingVisualizer extends Component {
     const { x, y } = this.state.start;
     graph[x][y].isStart = false;
     currNode.isStart = true;
+    currNode.isWall = false;
     this.setState({ nodes: graph, start: { x: col, y: row } });
   }
 
@@ -297,6 +269,7 @@ class PathfindingVisualizer extends Component {
           isWall: false,
           isPath: false,
           distance: Infinity,
+          f: Infinity,
           predecessor: null,
         };
         currCol.push(currNode);

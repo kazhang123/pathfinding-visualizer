@@ -1,8 +1,8 @@
 export default class Queue {
   constructor() {
     this.elems = [];
-    // this.first = 0; // index of first element in array
-    // this.size = 0; // number of items in array
+    this.first = 0; // index of first element in array
+    this.size = 0; // number of items in array
   }
 
   /**
@@ -11,7 +11,7 @@ export default class Queue {
    */
   enqueue(elem) {
     this.elems.push(elem);
-    // this.size++;
+    this.size++;
   }
 
   /**
@@ -22,41 +22,39 @@ export default class Queue {
    * assume function will not be called on an empty queue
    */
   dequeue() {
-    // const front = this.elems[this.first];
-    // this.elems[this.first] = null;
-    // this.first++;
-    // this.size--;
+    const front = this.elems[this.first];
+    this.elems[this.first] = null;
+    this.first++;
+    this.size--;
 
-    // if (!this.isEmpty() && this.size === this.first) {
-    //   // const newArray = this.elems.slice(this.first);
-    //   // let newArray = [];
-    //   // for (let i = 0; i < this.size; i++) {
-    //   //   newArray.push(this.elems[i + this.first]);
-    //   // }
+    if (!this.isEmpty() && this.size === this.first) {
+      // const newArray = this.elems.slice(this.first);
+      // let newArray = [];
+      // for (let i = 0; i < this.size; i++) {
+      //   newArray.push(this.elems[i + this.first]);
+      // }
 
-    //   this.elems.splice(0, this.first);
+      this.elems.splice(0, this.first);
 
-    //   // this.elems = newArray;
-    //   this.first = 0;
-    // }
+      // this.elems = newArray;
+      this.first = 0;
+    }
 
-    // return front;
-    return this.elems.shift();
+    return front;
   }
 
   /**
    * returns whether queue is empty
    */
   isEmpty() {
-    return this.elems.length === 0;
+    return this.size === 0;
   }
 
   /**
    * returns object at front of queue without removing it
    */
   front() {
-    // return this.elems[this.first];
-    return this.elems[0];
+    return this.elems[this.first];
   }
 
   peek() {

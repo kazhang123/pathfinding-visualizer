@@ -69,8 +69,19 @@ class NavBar extends Component {
                 >
                   Breadth First Search
                 </button>
-                <button class="dropdown-item" href="#">
+                <button
+                  onClick={() => this.props.setAlgorithm("DFS")}
+                  class="dropdown-item"
+                  href="#"
+                >
                   Depth First Search
+                </button>
+                <button
+                  onClick={() => this.props.setAlgorithm("A*")}
+                  class="dropdown-item"
+                  href="#"
+                >
+                  A*
                 </button>
               </div>
             </li>

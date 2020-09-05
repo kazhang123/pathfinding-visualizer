@@ -1,10 +1,6 @@
 import PriorityQueue from "./PriorityQueue";
 
 export function dijkstras(graph, startNode, endNode) {
-  // track distances from start node
-  // let distances = {};
-  // track predecessor of each node
-  // let parent = {};
   // track visited nodes in order
   let visited = [];
 
@@ -13,7 +9,6 @@ export function dijkstras(graph, startNode, endNode) {
   });
 
   // initialize source
-  // distances[startNode] = 0;
   startNode.distance = 0;
   pq.push(startNode);
   // start at source node

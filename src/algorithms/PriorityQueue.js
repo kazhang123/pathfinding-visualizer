@@ -42,10 +42,16 @@ export default class PriorityQueue {
     return this.leftChild(idx) < this.heap.length;
   }
 
+  /**
+   * returns the child of the current index with the lowest score
+   * assume function will be called only if currIdx has a child
+   * @param {*} currIdx
+   */
   minChild(currIdx) {
     const leftIdx = this.leftChild(currIdx);
     const rightIdx = this.rightChild(currIdx);
 
+    // if no right child, then return left child
     if (rightIdx >= this.heap.length) {
       return leftIdx;
     }
