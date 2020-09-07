@@ -52,6 +52,11 @@ export function getShortestPath(endNode) {
     currNode = currNode.predecessor;
   }
 
+  // If there is no path to the endNode i.e the endNode is the only node in the reverse path
+  if (path.length === 1) {
+    return [];
+  }
+
   return path.reverse();
 }
 

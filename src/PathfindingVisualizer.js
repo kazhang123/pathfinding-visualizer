@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import NavBar from "./components/navbar";
+import Legend from "./components/legend";
 import Node from "./components/node.jsx";
 import "./PathfindingVisualizer.css";
 import { dijkstras, getShortestPath } from "./algorithms/dijkstras";
@@ -23,6 +24,7 @@ class PathfindingVisualizer extends Component {
     startIsPressed: false,
     endIsPressed: false,
     selectedAlgorithm: "",
+    popoverOpen: false,
   };
 
   componentDidMount() {
@@ -30,14 +32,25 @@ class PathfindingVisualizer extends Component {
     this.setState({ nodes });
   }
 
+  /**
+   * animates the given visited nodes in order
+   * and the shortest path in order after the visited nodes
+   */
   visualize = (visitedNodes, shortestPath) => {
     this.resetNodesToUnvisited();
-    console.log(visitedNodes);
+    const startTime = performance.now();
 
+    // for each visited node:
+    // one extra iteration to animate path
     for (let i = 0; i <= visitedNodes.length; i++) {
+      // if on last iteration, animate path
+      // timeout proportional to iteration number so path animates after visited nodes
       if (i === visitedNodes.length) {
         setTimeout(() => {
           this.animatePath(shortestPath);
+
+          // get time allotted for animation to finish
+          console.log(this.getTimeAlotted(startTime));
         }, 15 * i);
 
         return;
@@ -45,12 +58,19 @@ class PathfindingVisualizer extends Component {
 
       let currNode = visitedNodes[i];
       const { col, row } = currNode;
+      // animate each node to change colour one after another
+      // timeout based on position in list so that
+      // each node should only changes colour after the previously visited one has changed colour
       setTimeout(() => {
         document.getElementById(`node ${col} ${row}`).className += " visited";
       }, 15 * i);
     }
   };
 
+  /**
+   * animates the given shortest path nodes in order
+   * @param {*} shortestPath
+   */
   animatePath(shortestPath) {
     for (let i = 0; i < shortestPath.length; i++) {
       let currNode = shortestPath[i];
@@ -59,6 +79,16 @@ class PathfindingVisualizer extends Component {
         document.getElementById(`node ${col} ${row}`).className += " path";
       }, 30 * i);
     }
+  }
+
+  /**
+   * returns time allotted since start time in s
+   * @param {*} startTime
+   */
+  getTimeAlotted(startTime) {
+    const endTime = performance.now();
+    const time = (endTime - startTime) / 1000;
+    return time.toFixed(4);
   }
 
   handleMouseDown = (x, y) => {
@@ -98,7 +128,14 @@ class PathfindingVisualizer extends Component {
   };
 
   handleMouseUp = () => {
+    // make sure that where start and end node are placed is not ON a wall
+    const nodes = [...this.state.nodes];
+    const { start, end } = this.state;
+    nodes[start.x][start.y].isWall = false;
+    nodes[end.x][end.y].isWall = false;
+
     this.setState({
+      nodes,
       mouseIsPressed: false,
       startIsPressed: false,
       endIsPressed: false,
@@ -131,12 +168,17 @@ class PathfindingVisualizer extends Component {
       case "A*":
         visitedNodes = aStar(graph, startNode, endNode);
         break;
+      default:
+        this.setState({ popoverOpen: true });
     }
 
     const shortestPath = getShortestPath(endNode);
     this.visualize(visitedNodes, shortestPath);
   };
 
+  /**
+   * resets graph to the intial graph
+   */
   handleReset = () => {
     const nodes = this.getInitialGraph();
     this.setState({
@@ -146,6 +188,9 @@ class PathfindingVisualizer extends Component {
     });
   };
 
+  /**
+   * clears all walls from graph without moving start and end nodes
+   */
   clearWalls = () => {
     const graph = [...this.state.nodes];
     for (let x = 0; x < NUM_COLS; x++) {
@@ -168,7 +213,9 @@ class PathfindingVisualizer extends Component {
           onReset={this.handleReset}
           onClearPath={this.resetNodesToUnvisited}
           onClearWalls={this.clearWalls}
+          popoverOpen={this.state.popoverOpen}
         />
+        <Legend />
         <div key={new Date()} className="grid">
           {this.state.nodes.map((col, colIdx) => {
             return (
@@ -215,7 +262,7 @@ class PathfindingVisualizer extends Component {
     const { x, y } = this.state.end;
     graph[x][y].isEnd = false;
     currNode.isEnd = true;
-    currNode.isWall = false;
+    // currNode.isWall = false;
     this.setState({ nodes: graph, end: { x: col, y: row } });
   }
 
@@ -229,7 +276,7 @@ class PathfindingVisualizer extends Component {
     const { x, y } = this.state.start;
     graph[x][y].isStart = false;
     currNode.isStart = true;
-    currNode.isWall = false;
+    // currNode.isWall = false;
     this.setState({ nodes: graph, start: { x: col, y: row } });
   }
 
