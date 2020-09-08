@@ -143,7 +143,7 @@ class PathfindingVisualizer extends Component {
   };
 
   setSelectedAlgorithm = (algorithm) => {
-    this.setState({ selectedAlgorithm: algorithm });
+    this.setState({ selectedAlgorithm: algorithm, popoverOpen: false });
   };
 
   handleVisualize = () => {
@@ -170,6 +170,7 @@ class PathfindingVisualizer extends Component {
         break;
       default:
         this.setState({ popoverOpen: true });
+        return;
     }
 
     const shortestPath = getShortestPath(endNode);
