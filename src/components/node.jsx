@@ -9,10 +9,10 @@ class Node extends Component {
       ? "start"
       : isEnd
       ? "end"
-      : // : isVisited
-      // ? "visited"
-      isWall
+      : isWall
       ? "wall"
+      : isVisited
+      ? "visited"
       : isPath
       ? "path"
       : "";

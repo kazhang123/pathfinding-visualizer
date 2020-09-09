@@ -25,6 +25,10 @@ class PathfindingVisualizer extends Component {
     endIsPressed: false,
     selectedAlgorithm: "",
     popoverOpen: false,
+    legend: {
+      timeTaken: 0,
+      algorithmMessage: "",
+    },
   };
 
   componentDidMount() {
@@ -47,10 +51,12 @@ class PathfindingVisualizer extends Component {
       // timeout proportional to iteration number so path animates after visited nodes
       if (i === visitedNodes.length) {
         setTimeout(() => {
-          this.animatePath(shortestPath);
-
-          // get time allotted for animation to finish
+          // get time allotted for searching animation to finish
           console.log(this.getTimeAlotted(startTime));
+          const time = this.getTimeAlotted(startTime);
+          // this.setState({ legend: { timeTaken: time } });
+
+          this.animatePath(shortestPath);
         }, 15 * i);
 
         return;
@@ -88,7 +94,7 @@ class PathfindingVisualizer extends Component {
   getTimeAlotted(startTime) {
     const endTime = performance.now();
     const time = (endTime - startTime) / 1000;
-    return time.toFixed(4);
+    return time.toFixed(3);
   }
 
   handleMouseDown = (x, y) => {
@@ -172,7 +178,6 @@ class PathfindingVisualizer extends Component {
         this.setState({ popoverOpen: true });
         return;
     }
-
     const shortestPath = getShortestPath(endNode);
     this.visualize(visitedNodes, shortestPath);
   };
@@ -216,7 +221,7 @@ class PathfindingVisualizer extends Component {
           onClearWalls={this.clearWalls}
           popoverOpen={this.state.popoverOpen}
         />
-        <Legend />
+        <Legend legend={this.state.legend} />
         <div key={new Date()} className="grid">
           {this.state.nodes.map((col, colIdx) => {
             return (
