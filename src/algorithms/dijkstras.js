@@ -17,7 +17,7 @@ export function dijkstras(graph, startNode, endNode) {
     let currNode = pq.pop();
     // console.log(currNode);
 
-    const { distance } = currNode;
+    const { col, row } = currNode;
 
     currNode.isVisited = true;
     visited.push(currNode);
@@ -30,8 +30,8 @@ export function dijkstras(graph, startNode, endNode) {
     let neighbours = getUnvisitedNeighbours(graph, currNode);
     for (let neighbour of neighbours) {
       // update distance from start node and predecessor
-      if (distance + 1 < neighbour.distance) {
-        neighbour.distance = distance + 1;
+      if (currNode.distance + 1 < neighbour.distance) {
+        neighbour.distance = currNode.distance + 1;
         neighbour.predecessor = currNode;
         pq.push(neighbour);
       }
