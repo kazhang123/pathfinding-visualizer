@@ -6,5 +6,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import PathfindingVisualizer from "./PathfindingVisualizer";
+import NewApp from "./NewApp";
 
 ReactDOM.render(<PathfindingVisualizer />, document.getElementById("root"));

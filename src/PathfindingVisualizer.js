@@ -24,11 +24,11 @@ class PathfindingVisualizer extends Component {
     startIsPressed: false,
     endIsPressed: false,
     selectedAlgorithm: "",
-    popoverOpen: false,
     legend: {
       timeTaken: 0,
       algorithmMessage: "",
     },
+    isAnimating: false,
   };
 
   componentDidMount() {
@@ -40,10 +40,60 @@ class PathfindingVisualizer extends Component {
    * animates the given visited nodes in order
    * and the shortest path in order after the visited nodes
    */
-  visualize = (visitedNodes, shortestPath) => {
+  // visualize = (visitedNodes, shortestPath) => {
+  //   this.resetNodesToUnvisited();
+  //   const startTime = performance.now();
+
+  //   // for each visited node:
+  //   // one extra iteration to animate path
+  //   for (let i = 0; i <= visitedNodes.length; i++) {
+  //     // if on last iteration, animate path
+  //     // timeout proportional to iteration number so path animates after visited nodes
+  //     if (i === visitedNodes.length) {
+  //       setTimeout(() => {
+  //         // get time allotted for searching animation to finish
+  //         console.log(this.getTimeAlotted(startTime));
+  //         const time = this.getTimeAlotted(startTime);
+  //         // this.setState({ legend: { timeTaken: time } });
+
+  //         this.animatePath(shortestPath);
+  //       }, 15 * i);
+
+  //       return;
+  //     }
+
+  //     let currNode = visitedNodes[i];
+  //     const { col, row } = currNode;
+  //     // animate each node to change colour one after another
+  //     // timeout based on position in list so that
+  //     // each node should only changes colour after the previously visited one has changed colour
+  //     setTimeout(() => {
+  //       document.getElementById(`node ${col} ${row}`).className += " visited";
+  //     }, 15 * i);
+  //   }
+  // };
+
+  visualize(algorithm) {
     this.resetNodesToUnvisited();
+
+    // const graph = [...this.state.nodes];
+    const graph = this.state.nodes.map((col) => {
+      return col.map((node) => {
+        let newNode = {};
+        for (let key in node) {
+          newNode[key] = node[key];
+        }
+        return newNode;
+      });
+    });
+
+    const { start, end } = this.state;
+    const startNode = graph[start.x][start.y];
+    const endNode = graph[end.x][end.y];
     const startTime = performance.now();
 
+    const visitedNodes = algorithm(graph, startNode, endNode);
+    this.setState({ isAnimating: true });
     // for each visited node:
     // one extra iteration to animate path
     for (let i = 0; i <= visitedNodes.length; i++) {
@@ -51,13 +101,19 @@ class PathfindingVisualizer extends Component {
       // timeout proportional to iteration number so path animates after visited nodes
       if (i === visitedNodes.length) {
         setTimeout(() => {
-          // get time allotted for searching animation to finish
-          console.log(this.getTimeAlotted(startTime));
-          const time = this.getTimeAlotted(startTime);
-          // this.setState({ legend: { timeTaken: time } });
-
+          const shortestPath = getShortestPath(endNode);
           this.animatePath(shortestPath);
-        }, 15 * i);
+
+          setTimeout(() => {
+            // this.state.isAnimating = false;
+            this.setState({ nodes: graph, isAnimating: false });
+
+            // get time allotted for searching animation to finish
+            const time = this.getTimeAlotted(startTime);
+            this.setState({ legend: { timeTaken: time } });
+          }, 30 * shortestPath.length + 1200); /** delay until last iteration of path animation
+                                                plus amount of seconds to animate path node */
+        }, 15 * i + 500);
 
         return;
       }
@@ -68,10 +124,11 @@ class PathfindingVisualizer extends Component {
       // timeout based on position in list so that
       // each node should only changes colour after the previously visited one has changed colour
       setTimeout(() => {
-        document.getElementById(`node ${col} ${row}`).className += " visited";
+        document.getElementById(`node ${col} ${row}`).className +=
+          " visited-animation";
       }, 15 * i);
     }
-  };
+  }
 
   /**
    * animates the given shortest path nodes in order
@@ -82,7 +139,8 @@ class PathfindingVisualizer extends Component {
       let currNode = shortestPath[i];
       const { col, row } = currNode;
       setTimeout(() => {
-        document.getElementById(`node ${col} ${row}`).className += " path";
+        document.getElementById(`node ${col} ${row}`).className +=
+          " path-animation";
       }, 30 * i);
     }
   }
@@ -149,37 +207,59 @@ class PathfindingVisualizer extends Component {
   };
 
   setSelectedAlgorithm = (algorithm) => {
-    this.setState({ selectedAlgorithm: algorithm, popoverOpen: false });
+    this.setState({ selectedAlgorithm: algorithm });
   };
+
+  // handleVisualize = () => {
+  //   const { selectedAlgorithm } = this.state;
+  //   const graph = [...this.state.nodes];
+  //   const { start, end } = this.state;
+  //   const startNode = graph[start.x][start.y];
+  //   const endNode = graph[end.x][end.y];
+
+  //   let visitedNodes = null;
+
+  //   switch (selectedAlgorithm) {
+  //     case "Dijkstra's":
+  //       visitedNodes = dijkstras(graph, startNode, endNode);
+  //       break;
+  //     case "BFS":
+  //       visitedNodes = bfs(graph, startNode, endNode);
+  //       break;
+  //     case "DFS":
+  //       visitedNodes = dfs(graph, startNode, endNode);
+  //       break;
+  //     case "A*":
+  //       visitedNodes = aStar(graph, startNode, endNode);
+  //       break;
+  //     default:
+  //       this.setState({ popoverOpen: true });
+  //       return;
+  //   }
+  //   const shortestPath = getShortestPath(endNode);
+  //   this.visualize(visitedNodes, shortestPath);
+  // };
 
   handleVisualize = () => {
     const { selectedAlgorithm } = this.state;
-    const graph = [...this.state.nodes];
-    const { start, end } = this.state;
-    const startNode = graph[start.x][start.y];
-    const endNode = graph[end.x][end.y];
-
-    let visitedNodes = null;
 
     switch (selectedAlgorithm) {
       case "Dijkstra's":
-        visitedNodes = dijkstras(graph, startNode, endNode);
+        this.visualize(dijkstras);
         break;
       case "BFS":
-        visitedNodes = bfs(graph, startNode, endNode);
+        this.visualize(bfs);
         break;
       case "DFS":
-        visitedNodes = dfs(graph, startNode, endNode);
+        this.visualize(dfs);
         break;
       case "A*":
-        visitedNodes = aStar(graph, startNode, endNode);
+        this.visualize(aStar);
         break;
       default:
-        this.setState({ popoverOpen: true });
+        alert("Select an algorithm to visualize!");
         return;
     }
-    const shortestPath = getShortestPath(endNode);
-    this.visualize(visitedNodes, shortestPath);
   };
 
   /**
@@ -219,7 +299,6 @@ class PathfindingVisualizer extends Component {
           onReset={this.handleReset}
           onClearPath={this.resetNodesToUnvisited}
           onClearWalls={this.clearWalls}
-          popoverOpen={this.state.popoverOpen}
         />
         <Legend legend={this.state.legend} />
         <div key={new Date()} className="grid">
@@ -232,6 +311,7 @@ class PathfindingVisualizer extends Component {
                     onMouseDown={this.handleMouseDown}
                     onMouseEnter={this.handleMouseEnter}
                     onMouseUp={this.handleMouseUp}
+                    isAnimating={this.state.isAnimating}
                     node={node}
                   />
                 ))}

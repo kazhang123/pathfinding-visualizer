@@ -46,15 +46,17 @@ returns shortest path from startNode to endNode
 */
 export function getShortestPath(endNode) {
   const path = [];
-  let currNode = endNode;
-  while (currNode !== null) {
-    path.push(currNode);
-    currNode = currNode.predecessor;
+
+  // If there is no path to the endNode i.e the endNode does not have a predecessor
+  if (endNode.predecessor === null) {
+    return [];
   }
 
-  // If there is no path to the endNode i.e the endNode is the only node in the reverse path
-  if (path.length === 1) {
-    return [];
+  let currNode = endNode;
+  while (currNode !== null) {
+    currNode.isPath = true;
+    path.push(currNode);
+    currNode = currNode.predecessor;
   }
 
   return path.reverse();

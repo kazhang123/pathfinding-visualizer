@@ -8,6 +8,23 @@
   color: rgb(124, 122, 122);
 }
 
+.time {
+  animation-name: timeAnimation;
+  animation-duration: 0.8s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes timeAnimation {
+  75% {
+    font-size: 20px;
+    color: black;
+  }
+
+  100% {
+    color: rgb(124, 122, 122);
+  }
+}
+
 .block {
   height: 30px;
   padding-left: 20px;

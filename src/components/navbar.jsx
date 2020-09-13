@@ -13,17 +13,7 @@ const BFS_LABEL = "BFS";
 const DFS_LABEL = "DFS";
 const ASTAR_LABEL = "A*";
 
-const ConditionalWrapper = ({ condition, wrapper, children }) =>
-  condition ? wrapper(children) : children;
-
 class NavBar extends Component {
-  getPopoverMessage = () => {
-    if (this.props.selectedAlgorithm === "") {
-      return "Select an algorithm to visualize!";
-    }
-    return "";
-  };
-
   render() {
     return (
       // <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -166,30 +156,11 @@ class NavBar extends Component {
                 A*
               </NavDropdown.Item>
             </NavDropdown>
-            <ConditionalWrapper
-              condition={this.props.popoverOpen}
-              wrapper={(children) => (
-                <OverlayTrigger
-                  trigger="focus"
-                  overlay={<Popover>Select an algorithm to visualize!</Popover>}
-                  placement="bottom"
-                >
-                  {children}
-                </OverlayTrigger>
-              )}
-            >
-              {/* <OverlayTrigger
-              trigger="focus"
-              placement="bottom"
-              overlay={<Popover>{""}</Popover>}
-            > */}
-              <span>
-                <Button variant="info" onClick={this.props.onVisualize}>
-                  {`Visualize ${this.props.selectedAlgorithm}`}
-                </Button>{" "}
-              </span>
-              {/* </OverlayTrigger> */}
-            </ConditionalWrapper>
+            <span>
+              <Button variant="info" onClick={this.props.onVisualize}>
+                {`Visualize ${this.props.selectedAlgorithm}`}
+              </Button>{" "}
+            </span>
             <Button variant="dark" onClick={this.props.onClearPath}>
               Clear Path
             </Button>{" "}
