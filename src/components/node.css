@@ -1,30 +1,21 @@
 .wrap {
   border: 1px solid rgb(202, 231, 230);
-  /* border-right: 1px solid rgb(176, 219, 217);
-  border-bottom: 1px solid rgb(176, 219, 217); */
   width: 30px;
   height: 30px;
   position: relative;
-
-  /* margin: 0 -1px -1px 0; */
 }
 
 .node {
-  /* border: 1px solid rgb(176, 219, 217); */
-  /* background-color: white; */
-  /* padding: 15px; */
   width: 30px;
   height: 30px;
-  /* margin: 0 -1px -1px 0; */
   cursor: pointer;
 }
 
 .visited {
-  background-color: #43d1ce;
+  background-color: #67f1a8;
 }
 
 .visited-animation {
-  /* background-color: aquamarine; */
   animation-name: visitedAnimation;
   animation-duration: 1.6s;
   animation-fill-mode: forwards;
@@ -34,33 +25,31 @@
 @keyframes visitedAnimation {
   0% {
     transform: scale(0.2);
-    /* background-color: white; */
     border-radius: 100%;
   }
 
   25% {
-    background-color: yellow;
+    background-color: #fffb7b;
   }
   50% {
-    background-color: #438dd1;
+    background-color: #67b0f1;
   }
   75% {
     transform: scale(1.2);
-    background-color: #43d187;
+    background-color: #67f1ed;
   }
   100% {
-    background-color: #43d1ce;
+    background-color: #67f1a8;
   }
 }
 
 .path {
-  background-color: yellow;
-  border: 1px solid yellow;
+  background-color: #fffb7b;
+  border: 1px solid #fffb7b;
   margin: -1px 0 0 -1px;
 }
 
 .path-animation {
-  /* background-color: yellow; */
   animation-name: pathAnimation;
   animation-duration: 1.2s;
   animation-fill-mode: forwards;
@@ -69,7 +58,7 @@
 
 @keyframes pathAnimation {
   0% {
-    background-color: rgb(126, 250, 213);
+    background-color: #67f1a8;
     border-radius: 100%;
     transform: scale(0.2);
   }
@@ -78,9 +67,8 @@
     transform: scale(1.2);
   }
   100% {
-    background-color: yellow;
-    border: 1px solid yellow;
-    /* outline: 1px solid yellow; */
+    background-color: #fffb7b;
+    border: 1px solid #fffb7b;
     margin: -1px 0 0 -1px;
   }
 }
@@ -88,8 +76,6 @@
 .wall {
   background-color: black;
   border: 1px solid black;
-  /* outline: 1px solid black; */
-
   margin: -1px 0 0 -1px;
 
   /* animation-name: wallAnimation;
@@ -108,21 +94,47 @@
   }
 } */
 
-.start {
+/* .start {
   background-color: green;
+} */
+
+/* .end {
+  background-color: red;
+} */
+
+.startWrap {
   /* border: solid black;
   border-width: 0 6px 6px 0;
   display: inline-block;
   top: 6px;
   left: 6px;
   position: absolute;
-  padding: 6px;
+  padding: 5px;
   margin: 0 0 0 -3px;
   width: 0;
   height: 0;
   transform: rotate(-45deg); */
+  cursor: pointer;
+
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  position: absolute;
+  border-left: 15px solid black;
+  display: block;
+  margin-left: 6px;
+  margin-top: 3px;
 }
 
-.end {
-  background-color: red;
+.endWrap {
+  width: 28px;
+  height: 28px;
+  background-color: black;
+  position: absolute;
+  padding: 4px;
+  border: solid 4px black;
+  border-radius: 50%;
+  background-clip: content-box;
+  cursor: pointer;
 }

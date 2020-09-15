@@ -1,5 +1,11 @@
 import React, { Component } from "react";
 import NavBar from "./components/navbar";
+import {
+  DIJKSTRAS_LABEL,
+  BFS_LABEL,
+  DFS_LABEL,
+  ASTAR_LABEL,
+} from "./components/navbar";
 import Legend from "./components/legend";
 import Node from "./components/node.jsx";
 import "./PathfindingVisualizer.css";
@@ -9,11 +15,12 @@ import { dfs } from "./algorithms/dfs";
 import { aStar } from "./algorithms/aStar";
 
 const START_NODE_X = 12;
-const START_NODE_Y = 9;
-const END_NODE_X = 26;
-const END_NODE_Y = 9;
-const NUM_COLS = 39;
-const NUM_ROWS = 19;
+const START_NODE_Y = 10;
+const END_NODE_X = 30;
+const END_NODE_Y = 10;
+const NUM_COLS = 43;
+const NUM_ROWS = 21;
+const TIME = 0;
 
 class PathfindingVisualizer extends Component {
   state = {
@@ -25,7 +32,7 @@ class PathfindingVisualizer extends Component {
     endIsPressed: false,
     selectedAlgorithm: "",
     legend: {
-      timeTaken: 0,
+      timeTaken: TIME.toFixed(3),
       algorithmMessage: "",
     },
     isAnimating: false,
@@ -73,10 +80,14 @@ class PathfindingVisualizer extends Component {
   //   }
   // };
 
+  /**
+   * animates traversal of given algorithm on current graph state
+   * @param {*} algorithm algorithm to visualize
+   */
   visualize(algorithm) {
     this.resetNodesToUnvisited();
 
-    // const graph = [...this.state.nodes];
+    // deep copy of the state's nodes
     const graph = this.state.nodes.map((col) => {
       return col.map((node) => {
         let newNode = {};
@@ -93,6 +104,12 @@ class PathfindingVisualizer extends Component {
     const startTime = performance.now();
 
     const visitedNodes = algorithm(graph, startNode, endNode);
+
+    // get time allotted for searching animation to finish
+    const endTime = performance.now();
+    const time = (endTime - startTime).toFixed(3);
+
+    // start animation of traversal
     this.setState({ isAnimating: true });
     // for each visited node:
     // one extra iteration to animate path
@@ -105,11 +122,8 @@ class PathfindingVisualizer extends Component {
           this.animatePath(shortestPath);
 
           setTimeout(() => {
-            // this.state.isAnimating = false;
             this.setState({ nodes: graph, isAnimating: false });
 
-            // get time allotted for searching animation to finish
-            const time = this.getTimeAlotted(startTime);
             this.setState({ legend: { timeTaken: time } });
           }, 30 * shortestPath.length + 1200); /** delay until last iteration of path animation
                                                 plus amount of seconds to animate path node */
@@ -145,15 +159,15 @@ class PathfindingVisualizer extends Component {
     }
   }
 
-  /**
-   * returns time allotted since start time in s
-   * @param {*} startTime
-   */
-  getTimeAlotted(startTime) {
-    const endTime = performance.now();
-    const time = (endTime - startTime) / 1000;
-    return time.toFixed(3);
-  }
+  // /**
+  //  * returns time allotted since start time in s
+  //  * @param {*} startTime
+  //  */
+  // getTimeAlotted(startTime) {
+  //   const endTime = performance.now();
+  //   const time = endTime - startTime;
+  //   return time.toFixed(3);
+  // }
 
   handleMouseDown = (x, y) => {
     const graph = [...this.state.nodes];
@@ -244,16 +258,16 @@ class PathfindingVisualizer extends Component {
     const { selectedAlgorithm } = this.state;
 
     switch (selectedAlgorithm) {
-      case "Dijkstra's":
+      case DIJKSTRAS_LABEL:
         this.visualize(dijkstras);
         break;
-      case "BFS":
+      case BFS_LABEL:
         this.visualize(bfs);
         break;
-      case "DFS":
+      case DFS_LABEL:
         this.visualize(dfs);
         break;
-      case "A*":
+      case ASTAR_LABEL:
         this.visualize(aStar);
         break;
       default:

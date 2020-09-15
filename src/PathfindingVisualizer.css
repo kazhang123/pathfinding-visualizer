@@ -1,8 +1,8 @@
 .grid {
   display: grid;
-  grid-template-columns: 30px repeat(38, 30px);
+  grid-template-columns: 30px repeat(42, 30px);
   position: fixed;
   top: 55%;
   left: 50%;
-  margin: -285px 0 0 -585px;
+  margin: -295px 0 0 -645px;
 }
