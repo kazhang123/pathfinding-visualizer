@@ -9,7 +9,7 @@ export const ASTAR_LABEL = "A*";
 class NavBar extends Component {
   render() {
     return (
-      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+      <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
         <Navbar.Brand href="#home">Pathfinding Visualizer</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
@@ -45,13 +45,13 @@ class NavBar extends Component {
                 {`Visualize ${this.props.selectedAlgorithm}`}
               </Button>{" "}
             </span>
-            <Button variant="dark" onClick={this.props.onClearPath}>
+            <Button variant="light" onClick={this.props.onClearPath}>
               Clear Path
             </Button>{" "}
-            <Button variant="dark" onClick={this.props.onClearWalls}>
+            <Button variant="light" onClick={this.props.onClearWalls}>
               Clear Walls
             </Button>{" "}
-            <Button variant="dark" onClick={this.props.onReset}>
+            <Button variant="light" onClick={this.props.onReset}>
               Reset
             </Button>
           </Nav>

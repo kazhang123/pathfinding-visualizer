@@ -5,8 +5,10 @@ class Legend extends Component {
   render() {
     return (
       <div className="legend">
+        <span className="legend-item block black"></span>
+        <span className="legend-item">Wall</span>
         <span className="legend-item block green"></span>
-        <span className="legend-item">Visited nodes</span>
+        <span className="legend-item">Visited node</span>
         <span className="legend-item block yellow"></span>
         <span className="legend-item">Path</span>
         <span>
@@ -14,7 +16,20 @@ class Legend extends Component {
           <span className="legend-item">Start node</span>
         </span>
         <span>
-          <span id="endSymbol" className="legend-item"></span>
+          <svg
+            width="2em"
+            height="2em"
+            viewBox="0 0 16 16"
+            class="bi bi-asterisk ml-2"
+            fill="currentColor"
+            xmlns="http://www.w3.org/2000/svg"
+            style={{ width: "26px", height: "26px" }}
+          >
+            <path
+              fill-rule="evenodd"
+              d="M8 0a1 1 0 0 1 1 1v5.268l4.562-2.634a1 1 0 1 1 1 1.732L10 8l4.562 2.634a1 1 0 1 1-1 1.732L9 9.732V15a1 1 0 1 1-2 0V9.732l-4.562 2.634a1 1 0 1 1-1-1.732L6 8 1.438 5.366a1 1 0 0 1 1-1.732L7 6.268V1a1 1 0 0 1 1-1z"
+            />
+          </svg>
           <span className="legend-item">End node</span>
         </span>
 
