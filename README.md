@@ -2,7 +2,11 @@
 
 ### Visualize pathfinding algorithms with this pathfinding visualizer web app. This project was built to introduce myself to web development as well as learn and apply skills in various data structures and algorithms.
 
-**_Features:_**
+## Project link:
+
+https://kazhang123.github.io/pathfinding-visualizer/
+
+### **_Features:_**
 
 - Click and drag to add walls, move start and end nodes, and make unique mazes
 - Visualize how various search algorithms traverse the custom maze, including BFS, DFS, Dijkstra's, and A\* Search
@@ -10,10 +14,10 @@
 
 ### Algorithms:
 
-- Dijkstra's: Considered the father of pathfinding algorithms. Guarantees to find the shortest path
+- Dijkstra's: Weighted search algorithm. Considered the father of pathfinding algorithms. Guarantees to find the shortest path
 - Breadth-First-Search: Guarantees to find the shortest path
 - Depth-First-Search: Does not guarantee to find the shortest path
-- A\* Search: Guarantees to find the shortest path and uses heuristics to find paths more efficiently than Dijkstra's and BFS
+- A\* Search: Weighted search algorithm. Guarantees to find the shortest path and uses heuristics to find paths more efficiently than Dijkstra's and BFS
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
