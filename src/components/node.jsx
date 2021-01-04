@@ -64,13 +64,15 @@ class Node extends Component {
           width="1em"
           height="1em"
           viewBox="0 0 16 16"
-          class="bi bi-asterisk mx-auto my-1 "
+          class="bi bi-asterisk "
           style={{
             width: "24px",
-            height: "23px",
+            height: "24px",
             display: "block",
             cursor: "pointer",
             position: "absolute",
+            marginLeft: "2px",
+            marginTop: "2px",
           }}
           fill="currentColor"
           xmlns="http://www.w3.org/2000/svg"

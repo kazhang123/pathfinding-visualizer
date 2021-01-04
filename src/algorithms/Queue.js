@@ -28,15 +28,7 @@ export default class Queue {
     this.size--;
 
     if (!this.isEmpty() && this.size === this.first) {
-      // const newArray = this.elems.slice(this.first);
-      // let newArray = [];
-      // for (let i = 0; i < this.size; i++) {
-      //   newArray.push(this.elems[i + this.first]);
-      // }
-
       this.elems.splice(0, this.first);
-
-      // this.elems = newArray;
       this.first = 0;
     }
 
@@ -57,9 +49,4 @@ export default class Queue {
     return this.elems[this.first];
   }
 
-  peek() {
-    console.log(this.elems.slice());
-    console.log(this.first);
-    console.log(this.size);
-  }
 }
