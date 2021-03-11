@@ -5,6 +5,7 @@ export const DIJKSTRAS_LABEL = "Dijkstra's";
 export const BFS_LABEL = "BFS";
 export const DFS_LABEL = "DFS";
 export const ASTAR_LABEL = "A*";
+export const GREEDY_BEST_FIRST_LABEL = "Greedy Best First Search";
 
 class NavBar extends Component {
   render() {
@@ -35,6 +36,12 @@ class NavBar extends Component {
               </NavDropdown.Item>
               <NavDropdown.Item
                 href="#action/3.4"
+                onSelect={() => this.props.setAlgorithm(GREEDY_BEST_FIRST_LABEL)}
+              >
+                Greedy Best First Search
+              </NavDropdown.Item>
+              <NavDropdown.Item
+                href="#action/3.5"
                 onSelect={() => this.props.setAlgorithm(ASTAR_LABEL)}
               >
                 A*

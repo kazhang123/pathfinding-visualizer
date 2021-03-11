@@ -5,6 +5,7 @@ import {
   BFS_LABEL,
   DFS_LABEL,
   ASTAR_LABEL,
+  GREEDY_BEST_FIRST_LABEL,
 } from "./components/navbar";
 import Legend from "./components/legend";
 import Node from "./components/node.jsx";
@@ -13,6 +14,7 @@ import { dijkstras, getShortestPath } from "./algorithms/dijkstras";
 import { bfs } from "./algorithms/bfs";
 import { dfs } from "./algorithms/dfs";
 import { aStar } from "./algorithms/aStar";
+import { greedyBestFirstSearch } from "./algorithms/greedyBestFirstSearch";
 
 const START_NODE_X = 12;
 const START_NODE_Y = 10;
@@ -42,43 +44,6 @@ class PathfindingVisualizer extends Component {
     const nodes = this.getInitialGraph();
     this.setState({ nodes });
   }
-
-  /**
-   * animates the given visited nodes in order
-   * and the shortest path in order after the visited nodes
-   */
-  // visualize = (visitedNodes, shortestPath) => {
-  //   this.resetNodesToUnvisited();
-  //   const startTime = performance.now();
-
-  //   // for each visited node:
-  //   // one extra iteration to animate path
-  //   for (let i = 0; i <= visitedNodes.length; i++) {
-  //     // if on last iteration, animate path
-  //     // timeout proportional to iteration number so path animates after visited nodes
-  //     if (i === visitedNodes.length) {
-  //       setTimeout(() => {
-  //         // get time allotted for searching animation to finish
-  //         console.log(this.getTimeAlotted(startTime));
-  //         const time = this.getTimeAlotted(startTime);
-  //         // this.setState({ legend: { timeTaken: time } });
-
-  //         this.animatePath(shortestPath);
-  //       }, 15 * i);
-
-  //       return;
-  //     }
-
-  //     let currNode = visitedNodes[i];
-  //     const { col, row } = currNode;
-  //     // animate each node to change colour one after another
-  //     // timeout based on position in list so that
-  //     // each node should only changes colour after the previously visited one has changed colour
-  //     setTimeout(() => {
-  //       document.getElementById(`node ${col} ${row}`).className += " visited";
-  //     }, 15 * i);
-  //   }
-  // };
 
   /**
    * animates traversal of given algorithm on current graph state
@@ -159,16 +124,6 @@ class PathfindingVisualizer extends Component {
     }
   }
 
-  // /**
-  //  * returns time allotted since start time in s
-  //  * @param {*} startTime
-  //  */
-  // getTimeAlotted(startTime) {
-  //   const endTime = performance.now();
-  //   const time = endTime - startTime;
-  //   return time.toFixed(3);
-  // }
-
   handleMouseDown = (x, y) => {
     const graph = [...this.state.nodes];
     const currNode = graph[x][y];
@@ -224,36 +179,6 @@ class PathfindingVisualizer extends Component {
     this.setState({ selectedAlgorithm: algorithm });
   };
 
-  // handleVisualize = () => {
-  //   const { selectedAlgorithm } = this.state;
-  //   const graph = [...this.state.nodes];
-  //   const { start, end } = this.state;
-  //   const startNode = graph[start.x][start.y];
-  //   const endNode = graph[end.x][end.y];
-
-  //   let visitedNodes = null;
-
-  //   switch (selectedAlgorithm) {
-  //     case "Dijkstra's":
-  //       visitedNodes = dijkstras(graph, startNode, endNode);
-  //       break;
-  //     case "BFS":
-  //       visitedNodes = bfs(graph, startNode, endNode);
-  //       break;
-  //     case "DFS":
-  //       visitedNodes = dfs(graph, startNode, endNode);
-  //       break;
-  //     case "A*":
-  //       visitedNodes = aStar(graph, startNode, endNode);
-  //       break;
-  //     default:
-  //       this.setState({ popoverOpen: true });
-  //       return;
-  //   }
-  //   const shortestPath = getShortestPath(endNode);
-  //   this.visualize(visitedNodes, shortestPath);
-  // };
-
   handleVisualize = () => {
     const { selectedAlgorithm } = this.state;
 
@@ -269,6 +194,9 @@ class PathfindingVisualizer extends Component {
         break;
       case ASTAR_LABEL:
         this.visualize(aStar);
+        break;
+      case GREEDY_BEST_FIRST_LABEL:
+        this.visualize(greedyBestFirstSearch);
         break;
       default:
         alert("Select an algorithm to visualize!");
