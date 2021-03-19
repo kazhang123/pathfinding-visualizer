@@ -77,14 +77,20 @@
   background-color: black;
   border: 1px solid black;
   margin: -1px 0 0 -1px;
-
-  /* animation-name: wallAnimation;
-  animation-duration: 0.2s;
-  animation-fill-mode: forwards;
-  animation-timing-function: ease-out; */
 }
 
-/* @keyframes wallAnimation {
+.wall-animation {
+  background-color: black;
+  border: 1px solid black;
+  margin: -1px 0 0 -1px;
+
+  animation-name: wallAnimation;
+  animation-duration: 0.2s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
+}
+
+@keyframes wallAnimation {
   0% {
     transform: scale(0.2);
     border-radius: 100%;
@@ -92,18 +98,34 @@
   75% {
     transform: scale(1.2);
   }
-} */
+  100% {
+    background-color: black;
+    border: 1px solid black;
+    margin: -1px 0 0 -1px;
+  }
+}
 
-/* .start {
-  background-color: green;
-} */
+.dewall-animation {
+  animation-name: dewallAnimation;
+  animation-duration: 0.2s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
+}
 
-/* .end {
-  background-color: red;
-} */
+@keyframes dewallAnimation {
+  75% {
+    border-radius: 100%;
+    transform: scale(0.2);
+  }
+  100% {
+    background-color: white;
+    border: 1px solid rgb(202, 231, 230);
+  }
+}
 
 .startWrap {
-  /* border: solid black;
+  /* following commented code is a shape for the start node that I can't decide if I like better
+  border: solid black;
   border-width: 0 6px 6px 0;
   display: inline-block;
   top: 6px;

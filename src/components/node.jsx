@@ -1,7 +1,8 @@
 import React, { Component } from "react";
+import { PureComponent } from "react";
 import "./node.css";
 
-class Node extends Component {
+class Node extends PureComponent {
   getClasses() {
     let classes = "node ";
     const {
@@ -11,7 +12,7 @@ class Node extends Component {
       isWall,
       isPath,
       isAnimating,
-    } = this.props.node;
+    } = this.props;
 
     classes += isStart
       ? "start"
@@ -19,11 +20,7 @@ class Node extends Component {
       ? "end"
       : isWall
       ? "wall"
-      : // : isVisited
-        // ? "visited"
-        // : isPath
-        // ? "path"
-        "";
+      : "";
 
     // if not currently animating nodes, keep nodes stagnant colours
     if (!isAnimating) {
@@ -38,7 +35,8 @@ class Node extends Component {
   }
 
   render() {
-    const { col, row, isStart, isEnd } = this.props.node;
+    // console.log("rendered")
+    const { col, row, isStart, isEnd } = this.props;
 
     // if node is start/end, render specific symbol on top of the node
     let startEndNode;
@@ -54,6 +52,7 @@ class Node extends Component {
       );
     } else if (isEnd) {
       startEndNode = (
+        // following commented code is a shape for the end node that I can't decide if I like better
         // <div
         //   className="endWrap"
         //   onMouseDown={() => this.props.onMouseDown(col, row)}
