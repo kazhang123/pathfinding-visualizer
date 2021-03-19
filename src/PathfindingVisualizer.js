@@ -128,8 +128,8 @@ class PathfindingVisualizer extends Component {
     const graph = [...this.state.nodes];
     const currNode = graph[x][y];
     if (!currNode.isStart && !currNode.isEnd) {
-      this.toggleWall(currNode, graph);
       this.setState({ mouseIsPressed: true });
+      this.toggleWall(currNode, graph);
     } else {
       if (currNode.isStart) {
         this.setState({ mouseIsPressed: true, startIsPressed: true });
@@ -155,9 +155,7 @@ class PathfindingVisualizer extends Component {
       return;
     }
 
-    if (!currNode.isStart && !currNode.isEnd) {
-      this.toggleWall(currNode, graph);
-    }
+    this.toggleWall(currNode, graph);
   };
 
   handleMouseUp = () => {
@@ -243,9 +241,8 @@ class PathfindingVisualizer extends Component {
           onClearWalls={this.clearWalls}
         />
         <Legend legend={this.state.legend} />
-        <div key={new Date()} className="grid">
-          {this.state.nodes.map((col, colIdx) => {
-            return (
+        <div className="grid">
+          {this.state.nodes.map((col, colIdx) => (
               <div key={colIdx}>
                 {col.map((node, rowIdx) => (
                   <Node
@@ -254,12 +251,17 @@ class PathfindingVisualizer extends Component {
                     onMouseEnter={this.handleMouseEnter}
                     onMouseUp={this.handleMouseUp}
                     isAnimating={this.state.isAnimating}
-                    node={node}
+                    col={node.col}
+                    row={node.row}
+                    isStart={node.isStart}
+                    isEnd={node.isEnd}
+                    isVisited={node.isVisited}
+                    isPath={node.isPath}
+                    isWall={node.isWall}
                   />
                 ))}
               </div>
-            );
-          })}
+          ))}
         </div>
       </React.Fragment>
     );
@@ -271,13 +273,27 @@ class PathfindingVisualizer extends Component {
    * @param {*} graph
    */
   toggleWall(currNode, graph) {
+    if (currNode.isStart || currNode.isEnd) {
+      return;
+    }
+    // animate the wall/dewall animation
+    if (!currNode.isWall) {
+      document.getElementById(`node ${currNode.col} ${currNode.row}`).className +=
+      " wall-animation";
+    }else {
+      document.getElementById(`node ${currNode.col} ${currNode.row}`).className +=
+      " dewall-animation";
+    }
+
     const newNode = {
       ...currNode,
       isWall: !currNode.isWall,
     };
-
-    graph[currNode.col][currNode.row] = newNode;
-    this.setState({ nodes: graph });
+    // set state after wall is done animating
+    setTimeout(() => {
+      graph[currNode.col][currNode.row] = newNode;
+      this.setState({ nodes: graph });
+    }, 200);
   }
 
   /**
@@ -309,7 +325,7 @@ class PathfindingVisualizer extends Component {
   }
 
   /**
-   * resets state's nodes to before dijkstra's was called
+   * resets state's nodes to before search algorithm was called
    */
   resetNodesToUnvisited = () => {
     const graph = [...this.state.nodes];
