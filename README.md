@@ -17,7 +17,8 @@ https://kazhang123.github.io/pathfinding-visualizer/
 - Dijkstra's: Weighted search algorithm. Considered the father of pathfinding algorithms. Guarantees to find the shortest path
 - Breadth-First-Search: Guarantees to find the shortest path
 - Depth-First-Search: Does not guarantee to find the shortest path
-- A\* Search: Weighted search algorithm. Guarantees to find the shortest path and uses heuristics to find paths more efficiently than Dijkstra's and BFS
+- A\* Search: Weighted search algorithm. Guarantees to find the shortest path and uses heuristics to select the node with the smallest combined distance between the source and goal node. By estimating the best path, this finds paths more efficiently than Dijkstra's and BFS
+- Greedy Best First Search: Weighted search algorithm. Does not guarantee to find the shortest path. Like A\* search, this algorithm uses heuristics to select the best path by expanding the node that is closest to the goal node. 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
