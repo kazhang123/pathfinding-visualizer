@@ -48,17 +48,17 @@ class NavBar extends Component {
               </NavDropdown.Item>
             </NavDropdown>
             <span>
-              <Button variant="info" onClick={this.props.onVisualize}>
+              <Button variant="info" disabled={this.props.isAnimating} onClick={this.props.onVisualize}>
                 {`Visualize ${this.props.selectedAlgorithm}`}
               </Button>{" "}
             </span>
-            <Button variant="light" onClick={this.props.onClearPath}>
+            <Button variant="light" disabled={this.props.isAnimating} onClick={this.props.onClearPath}>
               Clear Path
             </Button>{" "}
-            <Button variant="light" onClick={this.props.onClearWalls}>
+            <Button variant="light" disabled={this.props.isAnimating} onClick={this.props.onClearWalls}>
               Clear Walls
             </Button>{" "}
-            <Button variant="light" onClick={this.props.onReset}>
+            <Button variant="light" disabled={this.props.isAnimating} onClick={this.props.onReset}>
               Reset
             </Button>
           </Nav>

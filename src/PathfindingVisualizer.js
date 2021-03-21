@@ -125,6 +125,11 @@ class PathfindingVisualizer extends Component {
   }
 
   handleMouseDown = (x, y) => {
+    // don't allow user to edit board while animating an algorithm
+    if (this.state.isAnimating) {
+      return;
+    }
+
     const graph = [...this.state.nodes];
     const currNode = graph[x][y];
     if (!currNode.isStart && !currNode.isEnd) {
@@ -239,6 +244,7 @@ class PathfindingVisualizer extends Component {
           onReset={this.handleReset}
           onClearPath={this.resetNodesToUnvisited}
           onClearWalls={this.clearWalls}
+          isAnimating={this.state.isAnimating}
         />
         <Legend legend={this.state.legend} />
         <div className="grid">
