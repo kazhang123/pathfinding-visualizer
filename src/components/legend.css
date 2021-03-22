@@ -52,6 +52,21 @@
   background-color: #fffb7b;
 }
 
+span.weight:after {
+  /* top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0; */
+  margin: -10px;
+  top: 7px;
+  content: "\d7";
+  font-size: 45px;
+  color: grey;
+  line-height: 20px;
+  text-align: center;
+  position: relative;
+}
+
 #startSymbol {
   /* border: solid black;
   border-width: 0 6px 6px 0;

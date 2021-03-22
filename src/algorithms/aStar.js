@@ -26,9 +26,9 @@ export function aStar(graph, startNode, endNode) {
 
     let neighbours = getUnvisitedNeighbours(graph, currNode);
     for (let neighbour of neighbours) {
-      if (currNode.distance + 1 < neighbour.distance) {
+      if (currNode.distance + neighbour.weight < neighbour.distance) {
         neighbour.predecessor = currNode;
-        neighbour.distance = currNode.distance + 1;
+        neighbour.distance = currNode.distance + neighbour.weight;
 
         // calculate manhattan distance heuristic for neighbour
         let h =

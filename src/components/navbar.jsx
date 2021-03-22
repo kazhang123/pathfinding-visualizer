@@ -61,6 +61,9 @@ class NavBar extends Component {
             <Button variant="light" disabled={this.props.isAnimating} onClick={this.props.onReset}>
               Reset
             </Button>
+            <Button variant="outline-dark" disabled={this.props.isAnimating} onClick={this.props.setAddWeightSelected}>
+              {this.props.isAddWeightSelected ? "Stop Adding Weights" : "Add Weights"}
+            </Button>
           </Nav>
         </Navbar.Collapse>
       </Navbar>

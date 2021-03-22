@@ -23,6 +23,7 @@ const END_NODE_Y = 10;
 const NUM_COLS = 43;
 const NUM_ROWS = 21;
 const TIME = 0;
+const NODE_WEIGHT = 5;
 
 class PathfindingVisualizer extends Component {
   state = {
@@ -38,6 +39,7 @@ class PathfindingVisualizer extends Component {
       algorithmMessage: "",
     },
     isAnimating: false,
+    isAddWeightSelected: false,
   };
 
   componentDidMount() {
@@ -130,22 +132,33 @@ class PathfindingVisualizer extends Component {
       return;
     }
 
+    this.setState({mouseIsPressed: true});
+
+    if (this.state.isAddWeightSelected) {
+      this.handleAddWeight(x, y);
+      return;
+    }
+
     const graph = [...this.state.nodes];
     const currNode = graph[x][y];
     if (!currNode.isStart && !currNode.isEnd) {
-      this.setState({ mouseIsPressed: true });
       this.toggleWall(currNode, graph);
     } else {
       if (currNode.isStart) {
-        this.setState({ mouseIsPressed: true, startIsPressed: true });
+        this.setState({ startIsPressed: true });
       } else {
-        this.setState({ mouseIsPressed: true, endIsPressed: true });
+        this.setState({ endIsPressed: true });
       }
     }
   };
 
   handleMouseEnter = (x, y) => {
     if (!this.state.mouseIsPressed) {
+      return;
+    }
+
+    if (this.state.isAddWeightSelected) {
+      this.handleAddWeight(x, y);
       return;
     }
 
@@ -178,8 +191,36 @@ class PathfindingVisualizer extends Component {
     });
   };
 
+  handleAddWeight = (x, y) => {
+    const graph = [...this.state.nodes];
+    const currNode = graph[x][y];
+  
+    let newNode;
+    if (currNode.isWeighted) {
+      newNode = {
+        ...currNode,
+        weight: 1,
+        isWeighted: false,
+      }
+    } else {
+      newNode = {
+        ...currNode,
+        weight: NODE_WEIGHT,
+        isWeighted: true,
+      }
+    }
+  
+    graph[x][y] = newNode;
+    this.setState({nodes: graph});
+  };
+
   setSelectedAlgorithm = (algorithm) => {
     this.setState({ selectedAlgorithm: algorithm });
+  };
+
+  setAddWeightSelected = () => {
+    this.setState({isAddWeightSelected: !this.state.isAddWeightSelected});
+    console.log("add weight is selected: " + this.state.isAddWeightSelected);
   };
 
   handleVisualize = () => {
@@ -245,6 +286,8 @@ class PathfindingVisualizer extends Component {
           onClearPath={this.resetNodesToUnvisited}
           onClearWalls={this.clearWalls}
           isAnimating={this.state.isAnimating}
+          setAddWeightSelected={this.setAddWeightSelected}
+          isAddWeightSelected={this.state.isAddWeightSelected}
         />
         <Legend legend={this.state.legend} />
         <div className="grid">
@@ -264,6 +307,7 @@ class PathfindingVisualizer extends Component {
                     isVisited={node.isVisited}
                     isPath={node.isPath}
                     isWall={node.isWall}
+                    isWeighted={node.isWeighted}
                   />
                 ))}
               </div>
@@ -368,6 +412,8 @@ class PathfindingVisualizer extends Component {
           distance: Infinity,
           f: Infinity,
           predecessor: null,
+          weight: 1,
+          isWeighted: false,
         };
         currCol.push(currNode);
       }

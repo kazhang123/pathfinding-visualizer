@@ -12,6 +12,7 @@ class Node extends PureComponent {
       isWall,
       isPath,
       isAnimating,
+      isWeighted,
     } = this.props;
 
     classes += isStart
@@ -20,6 +21,8 @@ class Node extends PureComponent {
       ? "end"
       : isWall
       ? "wall"
+      : isWeighted
+      ? "weight" 
       : "";
 
     // if not currently animating nodes, keep nodes stagnant colours
@@ -36,7 +39,7 @@ class Node extends PureComponent {
 
   render() {
     // console.log("rendered")
-    const { col, row, isStart, isEnd } = this.props;
+    const { col, row, isStart, isEnd, isWeighted } = this.props;
 
     // if node is start/end, render specific symbol on top of the node
     let startEndNode;
@@ -52,13 +55,6 @@ class Node extends PureComponent {
       );
     } else if (isEnd) {
       startEndNode = (
-        // following commented code is a shape for the end node that I can't decide if I like better
-        // <div
-        //   className="endWrap"
-        //   onMouseDown={() => this.props.onMouseDown(col, row)}
-        //   onMouseEnter={() => this.props.onMouseEnter(col, row)}
-        //   onMouseUp={() => this.props.onMouseUp()}
-        // ></div>
         <svg
           width="1em"
           height="1em"

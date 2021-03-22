@@ -1,6 +1,6 @@
 # Pathfinding Visualizer
 
-### Visualize pathfinding algorithms with this pathfinding visualizer web app. This project was built to introduce myself to web development as well as learn and apply skills in various data structures and algorithms.
+### Visualize pathfinding algorithms with this pathfinding visualizer web app. This project was built to introduce myself to web development, as well as learn and apply skills in various data structures and algorithms.
 
 ## Project link:
 
@@ -9,8 +9,10 @@ https://kazhang123.github.io/pathfinding-visualizer/
 ### **_Features:_**
 
 - Click and drag to add walls, move start and end nodes, and make unique mazes
-- Visualize how various search algorithms traverse the custom maze, including BFS, DFS, Dijkstra's, and A\* Search
+- Visualize how various search algorithms traverse the custom maze, including BFS, DFS, Dijkstra's, A\* Search, and Greedy Best First Search
 - Observe and compare the traversal patterns, the time spent searching, and the path found by each algorithm
+- Use the 'Add Weights' button to click and drag to add a weight of 5 to certain nodes. Adding a weight means that there will be a cost of 5 to travel from a neighbouring node to a weighted node, compared to the cost of 1 for non-weighted nodes.
+  - Note that weights are not be considered in pathfinding for unweighted algorithms (BFS and DFS)!
 
 ### Algorithms:
 
@@ -18,7 +20,7 @@ https://kazhang123.github.io/pathfinding-visualizer/
 - Breadth-First-Search: Guarantees to find the shortest path
 - Depth-First-Search: Does not guarantee to find the shortest path
 - A\* Search: Weighted search algorithm. Guarantees to find the shortest path and uses heuristics to select the node with the smallest combined distance between the source and goal node. By estimating the best path, this finds paths more efficiently than Dijkstra's and BFS
-- Greedy Best First Search: Weighted search algorithm. Does not guarantee to find the shortest path. Like A\* search, this algorithm uses heuristics to select the best path by expanding the node that is closest to the goal node. 
+- Greedy Best First Search: Weighted search algorithm. Does not guarantee to find the shortest path. Like A\* search, this algorithm uses heuristics to select the best path by expanding the node that is closest to the goal node.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

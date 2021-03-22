@@ -32,7 +32,8 @@ class Legend extends Component {
           </svg>
           <span className="legend-item">End node</span>
         </span>
-
+        <span className="legend-item weight"/>
+        <span className="legend-item">Weighted Node</span>
         <span className="legend-item time">
           <svg
             width="1em"
