@@ -132,33 +132,30 @@ class PathfindingVisualizer extends Component {
       return;
     }
 
+    const graph = [...this.state.nodes];
+    const currNode = graph[x][y];
+
     this.setState({mouseIsPressed: true});
+
+    if (currNode.isStart) {
+      this.setState({ startIsPressed: true });
+      return;
+    } 
+    if (currNode.isEnd) {
+      this.setState({ endIsPressed: true });
+      return;
+    }
 
     if (this.state.isAddWeightSelected) {
       this.handleAddWeight(x, y);
       return;
     }
 
-    const graph = [...this.state.nodes];
-    const currNode = graph[x][y];
-    if (!currNode.isStart && !currNode.isEnd) {
-      this.toggleWall(currNode, graph);
-    } else {
-      if (currNode.isStart) {
-        this.setState({ startIsPressed: true });
-      } else {
-        this.setState({ endIsPressed: true });
-      }
-    }
+    this.toggleWall(currNode, graph);
   };
 
   handleMouseEnter = (x, y) => {
     if (!this.state.mouseIsPressed) {
-      return;
-    }
-
-    if (this.state.isAddWeightSelected) {
-      this.handleAddWeight(x, y);
       return;
     }
 
@@ -170,6 +167,11 @@ class PathfindingVisualizer extends Component {
       return;
     } else if (this.state.endIsPressed) {
       this.changeEndNode(currNode, graph);
+      return;
+    }
+
+    if (this.state.isAddWeightSelected) {
+      this.handleAddWeight(x, y);
       return;
     }
 
@@ -215,6 +217,9 @@ class PathfindingVisualizer extends Component {
   };
 
   setSelectedAlgorithm = (algorithm) => {
+    if (algorithm == BFS_LABEL || algorithm == DFS_LABEL) {
+      this.clearWeights();
+    }
     this.setState({ selectedAlgorithm: algorithm });
   };
 
@@ -275,6 +280,22 @@ class PathfindingVisualizer extends Component {
     this.setState({ nodes: graph });
   };
 
+  /**
+   * clears all weights from graph without affecting walls or start/end nodes
+   */
+  clearWeights = () => {
+    const graph = [...this.state.nodes];
+    for (let x = 0; x < NUM_COLS; x++) {
+      for (let y = 0; y < NUM_ROWS; y++) {
+        let node = graph[x][y];
+        node.isWeighted = false;
+        node.weight = 1;
+      }
+    }
+
+    this.setState({ nodes: graph });
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -285,6 +306,7 @@ class PathfindingVisualizer extends Component {
           onReset={this.handleReset}
           onClearPath={this.resetNodesToUnvisited}
           onClearWalls={this.clearWalls}
+          onClearWeights={this.clearWeights}
           isAnimating={this.state.isAnimating}
           setAddWeightSelected={this.setAddWeightSelected}
           isAddWeightSelected={this.state.isAddWeightSelected}

@@ -58,10 +58,16 @@ class NavBar extends Component {
             <Button variant="light" disabled={this.props.isAnimating} onClick={this.props.onClearWalls}>
               Clear Walls
             </Button>{" "}
+            <Button variant="light" disabled={this.props.isAnimating} onClick={this.props.onClearWeights}>
+              Clear Weights
+            </Button>
             <Button variant="light" disabled={this.props.isAnimating} onClick={this.props.onReset}>
               Reset
             </Button>
-            <Button variant="outline-dark" disabled={this.props.isAnimating} onClick={this.props.setAddWeightSelected}>
+            <Button 
+              variant={this.props.isAddWeightSelected ? "dark" : "outline-dark"} 
+              disabled={this.props.isAnimating || this.props.selectedAlgorithm == BFS_LABEL || this.props.selectedAlgorithm == DFS_LABEL} 
+              onClick={this.props.setAddWeightSelected}>
               {this.props.isAddWeightSelected ? "Stop Adding Weights" : "Add Weights"}
             </Button>
           </Nav>
